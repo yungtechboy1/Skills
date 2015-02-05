@@ -1,0 +1,14 @@
+name: Skills
+main: CyberTech\Main
+version: 1.0.1.1
+api: 1.0.1.1
+
+commands:
+    bounty:
+        description: "Base Bounty Command"
+        promission: Bounty
+        useage: "/bounty <set/del/list> [player] [Price]"
+permissions:
+    Bounty:
+        default: true
+        description: "Only Bounty Permission"
