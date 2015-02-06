@@ -1,6 +1,6 @@
 <?php
 /*
- * KillBounty (v1.0.1.1) by CyberTech++
+ * KillBounty (v1.0.0.0) by CyberTech++
  * Developer: CyeberTech++ (Yungtechboy1)
  * Website: http://www.cybertechpp.com
  * Date: 2/3/2015 11:47 PM (UTC)
@@ -45,7 +45,7 @@ class Main extends PluginBase implements Listener{
         
          public function onCommand(CommandSender $sender, Command $command, $label, array $args){
         switch($command->getName()){
-            case "skill":
+           /* case "skill":
                 if ($args[0] == "trade"){
                     $yml3 = (new Config($this->getServer()->getDataPath() . "/plugins/Skills/" . "block-shop.yml", Config::YAML ,array()));
                     $temp = $yml3->getAll();
@@ -68,7 +68,7 @@ class Main extends PluginBase implements Listener{
                         }
                     }
                 }
-                
+                */
             case "myskills":
                 //$this->GetPlayerSkills($sender->getName());
         }
@@ -95,19 +95,16 @@ class Main extends PluginBase implements Listener{
            }
            }
         
-        public function onPlayerDamage(EntityDamageEvent $event){
+       /* public function onPlayerDamage(EntityDamageEvent $event){
             $player = $event->getEntity();
             if ($player instanceof Player){
             $playern = $player->getName();
             $event->setDamage(50);
-            $yml = (new Config($this->getServer()->getDataPath() . "/plugins/Skills/" . "Skill-Settings.yml", Config::YAML ,array()));
-            $temp = $yml->getAll();
-            $ymla = (new Config($this->getServer()->getDataPath() . "/plugins/Skills/" . "Block-Xp.yml", Config::YAML ,array()));
-            $tempa = $ymla->getAll();
+            
             //$damage = $event->getDamage();
             //$this->getServer()->broadcastMessage($playern." HAPPENS--".$damage);
             }
-        }
+        }*/
         
         public function CheckLevelUpKill(Player $player){
             //$this->getServer()->broadcastMessage(" DEBUG");
@@ -149,7 +146,7 @@ class Main extends PluginBase implements Listener{
 
         }
         
-        public function OnBlockBreak(BlockBreakEvent $block){
+        /*public function OnBlockBreak(BlockBreakEvent $block){
         $placed = $block->getBlock()->getId();
         $yml = (new Config($this->getServer()->getDataPath() . "/plugins/Skills/" . "block-names.yml", Config::YAML ,array()));
         $temp = $yml->getAll();
@@ -164,7 +161,7 @@ class Main extends PluginBase implements Listener{
             $this->db->query("UPDATE stats SET blocksbroken=blocksbroken+'$addxp' WHERE player='$playern'");
         }
        
-        }
+        }*/
 
         public function CheckLevelUpDeath(Player $player){
             //$this->getServer()->broadcastMessage(" DEBUG");
@@ -214,11 +211,6 @@ class Main extends PluginBase implements Listener{
             $this->db->query("UPDATE stats SET deaths = deaths + 1 WHERE player='".$playern."'");
             if ($killer instanceof Plaeyr){$this->CheckLevelUpKill($killer);}
             $this->CheckLevelUpDeath($player);
-            //$this->db->q
-            //Check if player Gets Upgrade            //Check if player Gets Upgrade
-            //Check if player Gets Upgrade
-            //Check if player Gets Upgrade
-            //Check if player Gets Upgrade
 
         }
         
@@ -317,7 +309,7 @@ class Main extends PluginBase implements Listener{
             'allow-multi-bountys'=>true,
             'Current-Bounties' => array(),
         )))->getAll();
-        $yml1 = (new Config($this->getServer()->getDataPath() . "/plugins/Skills/" . "block-names.yml", Config::YAML ,array(   
+       /* $yml1 = (new Config($this->getServer()->getDataPath() . "/plugins/Skills/" . "block-names.yml", Config::YAML ,array(   
             '0'=>'Air',
             '1'=>'Stone',
             '2'=>'Grass Block',
@@ -570,7 +562,7 @@ class Main extends PluginBase implements Listener{
         
         $yml3 = (new Config($this->getServer()->getDataPath() . "/plugins/Skills/" . "block-shop.yml", Config::YAML ,array(
             'Money-Exchange'=>'1'
-            )))->getAll();
+            )))->getAll();*/
             
         return true;
     }
