@@ -28,6 +28,7 @@ class Main extends PluginBase implements Listener{
 
     public $db;
     public $skills;
+    public $econ;
     
     public function onEnable() {
          @mkdir($this->getDataFolder());
@@ -38,13 +39,35 @@ class Main extends PluginBase implements Listener{
          $this->db->exec("CREATE TABLE IF NOT EXISTS skills (id INTEGER PRIMARY KEY AUTOINCREMENT, player TEXT, kill INTEGER, miner INTEGER, health INTEGER, death INTEGER);");
          $this->db->exec("CREATE TABLE IF NOT EXISTS stats (id INTEGER PRIMARY KEY AUTOINCREMENT , player TEXT, kills INTEGER, deaths INTEGER, blocksplaced INTEGER, blocksbroken INTEGER);");
          $this->getServer()->getPluginManager()->registerEvents($this, $this);
-         //$this->api = EconomyAPI::getInstance();
+         $this->econ = EconomyAPI::getInstance();
          return true;
         }
         
          public function onCommand(CommandSender $sender, Command $command, $label, array $args){
         switch($command->getName()){
             case "skill":
+                if ($args[0] == "trade"){
+                    $yml3 = (new Config($this->getServer()->getDataPath() . "/plugins/Skills/" . "block-shop.yml", Config::YAML ,array()));
+                    $temp = $yml3->getAll();
+                    if (!isset($args[1])){
+                        $sender->sendMessage("Invalid Useage");
+                        $sender->sendMessage("/skill trade <amount> or /skill trade info");
+                    }elseif($args[0] == "info"){
+                        $sender->sendMessage("The Current Trade Rate is 1XP for $".$temp['Money-Exchange']);
+                    }else{
+                        $playern = $sender->getName();
+                        $xpq = $this->db->query("SELECT * FROM stats WHERE player='$playern'");
+                        $xpa = $xpq->fetchArray();
+                        $xp = $xpa['blocksbroken'];
+                        if ($args[1] > $xp){
+                            $sender->sendMessage("Uh Oh! You Dont Have Enough XP!");
+                        }  else {
+                            $money = (($temp['Money-Exchange']*1)*($xp*1));
+                            $this->api->addMoney ( $sender->getName(), $money );
+                            $this->db->query("UPDATE stats SET blocksbroken=blocksbroken-'$xp'");
+                        }
+                    }
+                }
                 
             case "myskills":
                 //$this->GetPlayerSkills($sender->getName());
@@ -80,7 +103,7 @@ class Main extends PluginBase implements Listener{
             $yml = (new Config($this->getServer()->getDataPath() . "/plugins/Skills/" . "Skill-Settings.yml", Config::YAML ,array()));
             $temp = $yml->getAll();
             $ymla = (new Config($this->getServer()->getDataPath() . "/plugins/Skills/" . "Block-Xp.yml", Config::YAML ,array()));
-            $tempa = $yml->getAll();
+            $tempa = $ymla->getAll();
             //$damage = $event->getDamage();
             //$this->getServer()->broadcastMessage($playern." HAPPENS--".$damage);
             }
@@ -127,15 +150,18 @@ class Main extends PluginBase implements Listener{
         }
         
         public function OnBlockBreak(BlockBreakEvent $block){
-        $placed = $this->getServer()->broadcastMessage($block->getBlock()->getId());
+        $placed = $block->getBlock()->getId();
         $yml = (new Config($this->getServer()->getDataPath() . "/plugins/Skills/" . "block-names.yml", Config::YAML ,array()));
         $temp = $yml->getAll();
         $yml1 = (new Config($this->getServer()->getDataPath() . "/plugins/Skills/" . "block-xp.yml", Config::YAML ,array()));
         $temp1 = $yml1->getAll();
+        $this->getServer()->broadcastMessage($temp[$placed]. "   ". $placed);
         if (isset($temp[$placed])){
             $o1 = $temp[$placed];
             $addxp = $temp1[$o1];
-            $this->db->query("UPDATE skills SET blocksbroken=blocksbroken+'$addxp'");
+            $playern = $block->getPlayer()->getName();
+            $this->getServer()->broadcastMessage("$addxp => XP and $PLAYERN is player and $placed");
+            $this->db->query("UPDATE stats SET blocksbroken=blocksbroken+'$addxp' WHERE player='$playern'");
         }
        
         }
@@ -541,6 +567,10 @@ class Main extends PluginBase implements Listener{
             'Glowing Obsidian'=>'1',
             'Nether Reactor Core D'=>'1'
         )))->getAll();
+        
+        $yml3 = (new Config($this->getServer()->getDataPath() . "/plugins/Skills/" . "block-shop.yml", Config::YAML ,array(
+            'Money-Exchange'=>'1'
+            )))->getAll();
             
         return true;
     }
