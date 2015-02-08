@@ -47,7 +47,6 @@ class Main extends PluginBase implements Listener{
          public function onCommand(CommandSender $sender, Command $command, $label, array $args){
         switch($command->getName()){
             case "skill":
-                //test
                 if ($args[0] == "trade"){
                     $yml3 = (new Config($this->getServer()->getDataPath() . "/plugins/Skills/" . "block-shop.yml", Config::YAML ,array()));
                     $temp = $yml3->getAll();
