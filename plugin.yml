@@ -1,14 +1,27 @@
 name: Skills
 main: CyberTech\Main
-version: 1.0.0.0
-api: 1.0.0.0
+version: 1.0.0.1
+api: 1.0.0.1 
 
 commands:
-    bounty:
+    skill:
         description: "Base Bounty Command"
-        promission: Bounty
-        useage: "/bounty <set/del/list> [player] [Price]"
+        permission: skill
+        useage: "/skill"
+    myskill:
+        description: "Shows Your Skills"
+        permission: skill
+        useage: "/myskill"
+    xp:
+        description: "Show How Much XP you have"
+        permission: skill
+        useage: "/xp"
+    sheal:
+        description: "Heals You"
+        permission: skill
+        useage: "/sheal"
+        
 permissions:
-    Bounty:
+    skill:
         default: true
-        description: "Only Bounty Permission"
+        description: "Only skill Permission"
